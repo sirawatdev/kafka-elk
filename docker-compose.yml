@@ -28,16 +28,15 @@ services:
         hard: -1
     mem_limit: 1g
     volumes:
-      - "./esdata:/usr/share/elasticsearch/data"
+      - "/data/esdata:/usr/share/elasticsearch/data"
     ports:
       - "9200:9200"
   logstash:
     image: docker.elastic.co/logstash/logstash:7.6.0
     container_name: logstash
     volumes:
-      - "./logstash.conf:/config-dir/logstash.conf"
+      - "./logstash-config/:/usr/share/logstash/pipeline"
     restart: always
-    command: logstash -f /config-dir/logstash.conf
     ports:
       - "9600:9600"
       - "7777:7777"
@@ -48,7 +47,7 @@ services:
     image: wurstmeister/kafka
     container_name: kafka
     volumes:
-      - "./kafkaData:/kafka"
+      - "/data/kafkaData:/kafka"
     depends_on:
       - zoo1
     links:
