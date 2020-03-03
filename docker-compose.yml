@@ -51,12 +51,8 @@ services:
       - "./kafkaData:/kafka"
     depends_on:
       - zoo1
-      - zoo2
-      - zoo3
     links:
       - zoo1
-      - zoo2
-      - zoo3
     ports:
       - "9092:9092"
     environment:
@@ -66,28 +62,12 @@ services:
       KAFKA_LOG_RETENTION_HOURS: "168"
       KAFKA_LOG_RETENTION_BYTES: "100000000"
       KAFKA_ZOOKEEPER_CONNECT:  zoo1:2181,zoo2:2181,zoo3:2181
-      KAFKA_CREATE_TOPICS: "scb-log:3:3"
+      KAFKA_CREATE_TOPICS: "scb-log:1:1"
   zoo1:
     image: elevy/zookeeper:latest
     container_name: zookeeper_1
     environment:
       MYID: 1
-      SERVERS: zoo1,zoo2,zoo3
+      SERVERS: zoo1
     ports:
       - "2181:2181"
-  zoo2:
-    image: elevy/zookeeper:latest
-    container_name: zookeeper_2
-    environment:
-      MYID: 2
-      SERVERS: zoo1,zoo2,zoo3
-    ports:
-      - "2182:2181"
-  zoo3:
-    image: elevy/zookeeper:latest
-    container_name: zookeeper_3
-    environment:
-      MYID: 3
-      SERVERS: zoo1,zoo2,zoo3
-    ports:
-      - "2183:2181"
