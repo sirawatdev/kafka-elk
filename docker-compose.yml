@@ -28,7 +28,7 @@ services:
         hard: -1
     mem_limit: 1g
     volumes:
-      - "/data/esdata:/usr/share/elasticsearch/data"
+      - "/Users/pony/esdata:/usr/share/elasticsearch/data"
     ports:
       - "9200:9200"
   logstash:
@@ -47,7 +47,7 @@ services:
     image: wurstmeister/kafka
     container_name: kafka
     volumes:
-      - "/data/kafkaData:/kafka"
+      - "/Users/pony/kafkaData:/kafka"
     depends_on:
       - zoo1
     links:
