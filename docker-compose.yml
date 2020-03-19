@@ -19,9 +19,6 @@ services:
     restart: always
     environment:
       - node.name=elasticsearch
-      - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=elasticsearch
-      - cluster.initial_master_nodes=elasticsearch
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -72,7 +69,7 @@ services:
     image: elevy/zookeeper:latest
     container_name: zookeeper_1
     restart: always
-    mem_limit: 1g
+    mem_limit: 1g 
     environment:
       MYID: 1
       SERVERS: zoo1
