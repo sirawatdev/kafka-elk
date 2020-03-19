@@ -34,10 +34,11 @@ services:
   logstash:
     image: docker.elastic.co/logstash/logstash:6.6.2
     container_name: logstash
+    environment:
+      - "LS_JAVA_OPTS=-Xmx1g -Xms1g"
     volumes:
       - "./logstash-config/:/usr/share/logstash/pipeline"
     restart: always
-    mem_limit: 1g
     ports:
       - "9600:9600"
       - "7777:7777"
@@ -59,7 +60,7 @@ services:
       - "9092:9092"
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ADVERTISED_HOST_NAME: SCBPN900801.local
+      KAFKA_ADVERTISED_HOST_NAME: SCBPN900881.local
       KAFKA_ADVERTISED_PORT: 9092
       KAFKA_LOG_RETENTION_HOURS: "168"
       KAFKA_LOG_RETENTION_BYTES: "100000000"
