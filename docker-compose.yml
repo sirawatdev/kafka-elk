@@ -3,7 +3,6 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:6.6.2
     container_name: kibana
-    mem_limit: 1g
     volumes:
       - "./kibana.yml:/usr/share/kibana/config/kibana.yml"
     restart: always
@@ -19,36 +18,19 @@ services:
     restart: always
     environment:
       - node.name=elasticsearch
-      - cluster.name=es-docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
     volumes:
       - "$HOME/esdata:/usr/share/elasticsearch/data"
     ports:
       - "9200:9200"
-  logstash:
-    image: docker.elastic.co/logstash/logstash:6.6.2
-    container_name: logstash
-    environment:
-      - "LS_JAVA_OPTS=-Xmx1g -Xms1g"
-    volumes:
-      - "./logstash-config/:/usr/share/logstash/pipeline"
-    restart: always
-    ports:
-      - "9600:9600"
-      - "7777:7777"
-    links:
-      - elasticsearch
-      - kafka
   kafka:
     image: wurstmeister/kafka
     container_name: kafka
-    mem_limit: 1g
     restart: always
     volumes:
       - "$HOME/kafkaData:/kafka"
@@ -71,9 +53,20 @@ services:
     image: elevy/zookeeper:latest
     container_name: zookeeper_1
     restart: always
-    mem_limit: 1g
     environment:
       MYID: 1
       SERVERS: zoo1
     ports:
       - "2181:2181"
+  logstash:
+    image: docker.elastic.co/logstash/logstash:6.6.2
+    container_name: logstash
+    volumes:
+      - "./logstash-config/:/usr/share/logstash/pipeline"
+    restart: always
+    ports:
+      - "9600:9600"
+      - "7777:7777"
+    links:
+      - elasticsearch:elasticsearch
+      - kafka:kafka
